@@ -53,7 +53,7 @@ pipeline {
               
             },
             "Junit": {
-              junit '/target/surefire-reports/**/*.xml'
+              junit '**/target/surefire-reports/TEST-*.xml'
               
             }
           )
