@@ -33,10 +33,22 @@ pipeline {
         )
       }
     }
-    stage('end') {
+    stage('build') {
       steps {
         echo 'echo "data"'
+        sh 'mvn package'
+      }
+    }
+    stage('sonar') {
+      steps {
+        script {
+          git '/var/lib/jenkins/workspace/CI-CD/DewithChef/'
+          def scannerHome = tool 'Sonarscanner';
+          withSonarQubeEnv {
+            sh "${scannerHome}bin/sonar-runner"}
+          }
+          
+        }
       }
     }
   }
-}
