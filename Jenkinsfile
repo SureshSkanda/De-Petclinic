@@ -42,10 +42,18 @@ pipeline {
     stage('sonar') {
       steps {
         script {
-          git '/var/lib/jenkins/workspace/CI-CD/DewithChef/'
+          git '/var/lib/jenkins/workspace/Skanda_De-Petclinic_develop-K7G46OPVOWKZXUEVYDGNHT4WGZ7ICO7ZFDXERX3VMW5O5JUOSTDQ$'
           def scannerHome = tool 'Sonarscanner';
           withSonarQubeEnv {
             sh "${scannerHome}bin/sonar-runner"}
+          }
+          
+        }
+      }
+      stage('Nexus Archive') {
+        steps {
+          script {
+            nexusArtifactUploader artifacts: [[artifactId: 'spring-petclinic', classifier: '', file: '/var/lib/jenkins/workspace/Skanda_De-Petclinic_develop-K7G46OPVOWKZXUEVYDGNHT4WGZ7ICO7ZFDXERX3VMW5O5JUOSTDQ$/target/petclinic.war', type: 'war']], credentialsId: 'nexus', groupId: 'org.springframework.samples', nexusUrl: '35.154.15.190:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-releases', version: '4.0.${BUILD_NUMBER}'
           }
           
         }
