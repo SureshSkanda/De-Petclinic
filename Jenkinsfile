@@ -26,23 +26,17 @@ pipeline {
     }
     stage('Maven Invoke') {
       steps {
-        echo 'maven invoke'
-      }
-    }
-    stage('Sanity Check') {
-      steps {
-        sh '''mvn findbugs:check
-mvn test'''
-      }
-    }
-    stage('Unit Test') {
-      steps {
         parallel(
-          "Unit Test": {
-            sh 'mvn --version'
+          "Maven Invoke": {
+            echo 'maven invoke'
             
           },
-          "Junit": {
+          "Sanity Check": {
+            sh '''mvn findbugs:check
+mvn test'''
+            
+          },
+          "Unit Tests": {
             junit '**/target/surefire-reports/TEST-*.xml'
             
           }
