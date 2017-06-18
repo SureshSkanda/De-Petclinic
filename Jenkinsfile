@@ -54,5 +54,16 @@ mvn test'''
         sh 'mvn package'
       }
     }
+    stage('Sonar Analysis') {
+      steps {
+        script {
+          git '/var/lib/jenkins/workspace/Skanda_De-Petclinic_brave-TVG6UIEQISBJB4V4QVU2J4RG5U7SRNCIWRDZXZRLTNJR3FVWONYA'
+          def scannerHome = tool 'Sonarscanner';
+          withSonarQubeEnv {
+            sh "${scannerHome}bin/sonar-runner"}
+          }
+          
+        }
+      }
+    }
   }
-}
