@@ -67,5 +67,13 @@ mvn test'''
           
         }
       }
+      stage('Chefserver Spinup') {
+        steps {
+          script {
+            
+          }
+          
+        }
+      }
     }
   }
