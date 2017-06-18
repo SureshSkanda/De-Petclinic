@@ -31,7 +31,8 @@ pipeline {
     }
     stage('Sanity Check') {
       steps {
-        sh 'mvn findbugs:check'
+        sh '''mvn findbugs:check
+mvn test'''
       }
     }
     stage('Unit Test') {
