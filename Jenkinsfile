@@ -39,7 +39,7 @@ mvn test'''
       steps {
         parallel(
           "Unit Test": {
-            sh 'mvn test'
+            sh 'mvn --version'
             
           },
           "Junit": {
@@ -57,10 +57,18 @@ mvn test'''
     stage('Sonar Analysis') {
       steps {
         script {
-          git '/var/lib/jenkins/workspace/Skanda_De-Petclinic_brave-TVG6UIEQISBJB4V4QVU2J4RG5U7SRNCIWRDZXZRLTNJR3FVWONYA'
+          git '/var/lib/jenkins/workspace/shSkanda_De-Petclinic_brave-TVG6UIEQISBJB4V4QVU2J4RG5U7SRNCIWRDZXZRLTNJR3FVWONYA'
           def scannerHome = tool 'Sonarscanner';
           withSonarQubeEnv {
             sh "${scannerHome}bin/sonar-runner"}
+          }
+          
+        }
+      }
+      stage('Nexus Archive') {
+        steps {
+          script {
+            nexusArtifactUploader artifacts: [[artifactId: 'spring-petclinic', classifier: '', file: '/var/lib/jenkins/workspace/shSkanda_De-Petclinic_brave-TVG6UIEQISBJB4V4QVU2J4RG5U7SRNCIWRDZXZRLTNJR3FVWONYA/target/petclinic.war', type: 'war']], credentialsId: 'nexus', groupId: 'org.springframework.samples', nexusUrl: '35.154.15.190:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-releases', version: '5.0.${BUILD_NUMBER}'
           }
           
         }
